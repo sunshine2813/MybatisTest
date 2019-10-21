@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdhh.mapper.ContractMapper">
+    <resultMap id="BaseResultMap" type="com.sdhh.po.Contract">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="INTEGER"/>
+        <result column="month" property="month" jdbcType="INTEGER"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="partb" property="partb" jdbcType="VARCHAR"/>
+        <result column="money" property="money" jdbcType="DECIMAL"/>
+        <result column="department" property="department" jdbcType="VARCHAR"/>
+        <result column="imageurl" property="imageurl" jdbcType="VARCHAR"/>
+        <result column="imagenames" property="imagenames" jdbcType="VARCHAR"/>
+        <result column="attachurl" property="attachurl" jdbcType="VARCHAR"/>
+        <result column="attachnames" property="attachnames" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.sdhh.po.Contract" extends="BaseResultMap">
+        <result column="detail" property="detail" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, type, year, month, number, partb, money, department, imageurl, imagenames,
+        attachurl, attachnames
+    </sql>
+    <sql id="Blob_Column_List">
+        detail
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from contract
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from contract
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.sdhh.po.Contract">
+        insert into contract (id, name, type,
+        year, month, number,
+        partb, money, department,
+        imageurl, imagenames, attachurl,
+        attachnames, detail)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+        #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR},
+        #{partb,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{department,jdbcType=VARCHAR},
+        #{imageurl,jdbcType=VARCHAR}, #{imagenames,jdbcType=VARCHAR}, #{attachurl,jdbcType=VARCHAR},
+        #{attachnames,jdbcType=VARCHAR}, #{detail,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.sdhh.po.Contract">
+        insert into contract
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="year != null">
+                year,
+            </if>
+            <if test="month != null">
+                month,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="partb != null">
+                partb,
+            </if>
+            <if test="money != null">
+                money,
+            </if>
+            <if test="department != null">
+                department,
+            </if>
+            <if test="imageurl != null">
+                imageurl,
+            </if>
+            <if test="imagenames != null">
+                imagenames,
+            </if>
+            <if test="attachurl != null">
+                attachurl,
+            </if>
+            <if test="attachnames != null">
+                attachnames,
+            </if>
+            <if test="detail != null">
+                detail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                #{year,jdbcType=INTEGER},
+            </if>
+            <if test="month != null">
+                #{month,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="partb != null">
+                #{partb,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null">
+                #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="department != null">
+                #{department,jdbcType=VARCHAR},
+            </if>
+            <if test="imageurl != null">
+                #{imageurl,jdbcType=VARCHAR},
+            </if>
+            <if test="imagenames != null">
+                #{imagenames,jdbcType=VARCHAR},
+            </if>
+            <if test="attachurl != null">
+                #{attachurl,jdbcType=VARCHAR},
+            </if>
+            <if test="attachnames != null">
+                #{attachnames,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                #{detail,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sdhh.po.Contract">
+        update contract
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                year = #{year,jdbcType=INTEGER},
+            </if>
+            <if test="month != null">
+                month = #{month,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="partb != null">
+                partb = #{partb,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null">
+                money = #{money,jdbcType=DECIMAL},
+            </if>
+            <if test="department != null">
+                department = #{department,jdbcType=VARCHAR},
+            </if>
+            <if test="imageurl != null">
+                imageurl = #{imageurl,jdbcType=VARCHAR},
+            </if>
+            <if test="imagenames != null">
+                imagenames = #{imagenames,jdbcType=VARCHAR},
+            </if>
+            <if test="attachurl != null">
+                attachurl = #{attachurl,jdbcType=VARCHAR},
+            </if>
+            <if test="attachnames != null">
+                attachnames = #{attachnames,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                detail = #{detail,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sdhh.po.Contract">
+        update contract
+        set name = #{name,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        year = #{year,jdbcType=INTEGER},
+        month = #{month,jdbcType=INTEGER},
+        number = #{number,jdbcType=VARCHAR},
+        partb = #{partb,jdbcType=VARCHAR},
+        money = #{money,jdbcType=DECIMAL},
+        department = #{department,jdbcType=VARCHAR},
+        imageurl = #{imageurl,jdbcType=VARCHAR},
+        imagenames = #{imagenames,jdbcType=VARCHAR},
+        attachurl = #{attachurl,jdbcType=VARCHAR},
+        attachnames = #{attachnames,jdbcType=VARCHAR},
+        detail = #{detail,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.sdhh.po.Contract">
+        update contract
+        set name = #{name,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        year = #{year,jdbcType=INTEGER},
+        month = #{month,jdbcType=INTEGER},
+        number = #{number,jdbcType=VARCHAR},
+        partb = #{partb,jdbcType=VARCHAR},
+        money = #{money,jdbcType=DECIMAL},
+        department = #{department,jdbcType=VARCHAR},
+        imageurl = #{imageurl,jdbcType=VARCHAR},
+        imagenames = #{imagenames,jdbcType=VARCHAR},
+        attachurl = #{attachurl,jdbcType=VARCHAR},
+        attachnames = #{attachnames,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+    <!-- ADD Custom -->
+    <insert id="addContract" parameterType="com.sdhh.po.Contract" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        contract(name,type,number, year, month, partb,money,department,detail)
+        values(#{name},#{type},#{number}, #{year}, #{month}, #{partb},#{money},#{department}, #{detail})
+    </insert>
+
+    <update id="setUrl">
+        update contract
+        set imageurl = #{imageurl},attachurl = #{attachurl}
+        where id = #{dbId}
+    </update>
+
+    <!-- 查询合同语句 有3个关键词 type year name
+    查询语句 有8种: ty, tn, yn, t, y, n ,tyn, all(全部)
+     -->
+    <select id="getAllContract" resultType="contract">
+        select * from contract
+        order by year, month
+    </select>
+
+    <select id="getTYContract" resultType="contract">
+        select * from contract
+        where year = #{year} and type=#{type}
+        order by month
+    </select>
+
+    <select id="getTNContract" resultType="contract">
+        select * from contract
+        where type=#{type} and name like CONCAT('%', #{name}, '%')
+        order by year, month
+    </select>
+
+    <select id="getYNContract" resultType="contract">
+        select * from contract
+        where year =#{year} and name like CONCAT('%', #{name}, '%')
+        order by month
+    </select>
+
+    <select id="getYContract" resultType="contract">
+        select * from contract
+        where year =#{year}
+        order by month
+    </select>
+
+    <select id="getNContract" resultType="contract">
+        select * from contract
+        where name like CONCAT('%', #{name}, '%')
+        order by year, month
+    </select>
+
+    <select id="getTContract" resultType="contract">
+        select * from contract
+        where type = #{type}
+        order by month
+    </select>
+
+    <select id="getTYNContract" resultType="contract">
+        select * from contract
+        where year =#{year} and type=#{type} and name like CONCAT('%', #{name}, '%')
+        order by month
+    </select>
+
+
+    <delete id="deleteContractById">
+        delete from contract
+        where id = #{id}
+    </delete>
+
+    <select id="getImagenamesById" resultType="String">
+        select imagenames from contract
+        where id = #{id}
+    </select>
+
+    <update id="addImagenamesById">
+        update contract
+        set imagenames = #{newImagenames}
+        where id = #{id}
+    </update>
+
+    <select id="getAttachnamesById" resultType="String">
+        select attachnames from contract
+        where id = #{id}
+    </select>
+
+    <update id="addAttachnamesById">
+        update contract
+        set attachnames = #{newAttachnames}
+        where id = #{id}
+    </update>
+
+
+    <select id="getContractType" resultType="contractType">
+        select * from contract_type;
+    </select>
+
+    <delete id="delCrtTypById">
+        DELETE from contract_type where id = #{id};
+    </delete>
+
+    <insert id="addContractType" parameterType="contractType" useGeneratedKeys="true" keyProperty="id">
+        insert into contract_type(typename)
+        values(#{typename});
+    </insert>
+
+
+</mapper>

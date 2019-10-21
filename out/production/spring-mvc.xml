@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context    http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
+       default-lazy-init="true">
+
+    <!-- mvc注解驱动 -->
+    <!-- 增加SSM配置的utf-8编码 前后端传参数 汉字乱码 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 自动扫描根路径下的所有注解 -->
+    <context:component-scan base-package="com.sdhh.controller"/>
+
+
+    <!-- 配置视图解析器 下面是更复杂的  暂时用这个简单的-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 增加 视图解析器  -->
+    <!-- 使用MappingJackson2JsonView 配合@ResponseBody来返回JSON格式 -->
+    <!-- ContentNegotiatingViewResolver ，“内容协商视图解析器”，
+		    其实就是根据返回什么类型的视图，就协商使用哪种视图解析器。
+		    如果返回jsp就使用InternalResourceViewResolver视图解析器，
+		    如果返回JSON格式就使用MappingJackson2JsonView来处理
+		    配置了 MappingJackson2JsonView 之后，就没有必要在自己手动 JSON格式化了
+     -->
+
+    <!-- HttpMessageConverter  支持spring4以上的视图解析器 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <!-- 增加END -->
+
+<!--    <mvc:resources mapping="/img/**" location="/img/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/ruoyi/**" location="/ruoyi/"/>
+    <mvc:resources mapping="/fonts/**" location="/fonts/"/>-->
+
+    <!-- 配置拦截器 -->
+    <!-- <mvc:interceptors>
+        <mvc:interceptor>
+            拦截所有mvc控制器
+            <mvc:mapping path="/**"/>
+            mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
+                LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选)
+            这里配置不拦截登录请求/loginMV
+            <mvc:exclude-mapping path="/login" />
+            <bean class="com.sdhh.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            资源拦截
+            <mvc:mapping path="/**"/>
+            <bean class="com.sdhh.interceptor.PermissionInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors> -->
+
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+
+    <!-- 开启aop，对类代理 -->
+    <aop:config proxy-target-class="true"/>
+
+</beans>

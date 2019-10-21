@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdhh.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.sdhh.po.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="usercode" property="usercode" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="locked" property="locked" jdbcType="CHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, usercode, username, password, salt, locked
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.sdhh.po.User">
+        insert into user (id, usercode, username,
+        password, salt, locked
+        )
+        values (#{id,jdbcType=BIGINT}, #{usercode,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{locked,jdbcType=CHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.sdhh.po.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="usercode != null">
+                usercode,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="locked != null">
+                locked,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="usercode != null">
+                #{usercode,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="locked != null">
+                #{locked,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sdhh.po.User">
+        update user
+        <set>
+            <if test="usercode != null">
+                usercode = #{usercode,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="locked != null">
+                locked = #{locked,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="User">
+        update user
+        set usercode = #{usercode,jdbcType=VARCHAR},
+        username = #{username,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        salt = #{salt,jdbcType=VARCHAR},
+        locked = #{locked,jdbcType=CHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <!-- add custom  0723 -->
+    <select id="findUserByName" resultType="User">
+        select * from user
+        where username = #{username}
+    </select>
+
+    <select id="findActiveUserByUsercode" resultType="com.sdhh.po.ActiveUser">
+        select
+        user.id as id, user.usercode as usercode, user.username as username, user.password as password,
+        user.salt as salt, user.locked as locked, GROUP_CONCAT(permission.percode SEPARATOR ',') as permissions
+        from user, permission, user_permission
+        where
+        user.usercode = #{usercode}
+        and
+        user.id = user_permission.user_id
+        and
+        permission.id = user_permission.permission_id
+        group by user.id;
+    </select>
+
+
+    <select id="findActiveUserByUsername" resultType="com.sdhh.po.ActiveUser">
+        select
+        user.id as id, user.usercode as usercode, user.username as username, user.password as password,
+        user.salt as salt, user.locked as locked, GROUP_CONCAT(permission.percode SEPARATOR ',') as permissions
+        from user, permission, user_permission
+        where
+        user.username = #{username}
+        and
+        user.id = user_permission.user_id
+        and
+        permission.id = user_permission.permission_id
+        group by user.id;
+    </select>
+
+
+    <select id="getUsers" resultType="com.sdhh.po.User">
+        select * from USER
+    </select>
+
+    <!--返回的permissions字段是String类型,内容是用逗号分开的
+        例如:
+        permissions => String(voucher:create,voucher:delete).
+        直接用user表和permission表和user_permission表进行查询权限,不用role表了
+    -->
+    <select id="getUserPerms" resultType="com.sdhh.po.ActiveUser">
+        select
+        user.id as id, user.usercode as usercode, user.username as username, user.password as password,
+        user.salt as salt, user.locked as locked,GROUP_CONCAT(permission.percode SEPARATOR ',') as permissions
+        from user, permission, user_permission
+        where
+        user.id = user_permission.user_id
+        and
+        permission.id = user_permission.permission_id
+        group by user.id;
+    </select>
+
+    <select id="getUserPermsByUsername" resultType="com.sdhh.po.ActiveUser">
+        select
+        user.id as id, user.usercode as usercode, user.username as username, user.password as password,
+        user.salt as salt, user.locked as locked,GROUP_CONCAT(permission.percode SEPARATOR ',') as permissions
+        from user, permission, user_permission
+        where
+        username = #{username}
+        and
+        user.id = user_permission.user_id
+        and
+        permission.id = user_permission.permission_id
+        group by user.id;
+    </select>
+
+    <update id="updatePasswordById">
+        update USER SET password = #{newPwd}, salt = #{salt} WHERE id = #{id}
+    </update>
+
+    <update id="updatePasswordByUsername">
+        update USER SET password = #{newPwd}, salt = #{salt} WHERE username = #{username}
+    </update>
+
+    <!--删除用户,需要级联删除: 根据userid 删除u USER_PERMISSION的记录, 再根据userid删除user里的记录-->
+    <delete id="delUserById">
+        delete from USER_PERMISSION where user_id = #{id};
+        delete from USER where id = #{id};
+    </delete>
+
+    <insert id="addUser" parameterType="com.sdhh.po.User" useGeneratedKeys="true" keyProperty="id">
+        insert into USER (usercode, username, password, salt, locked)
+        VALUES(#{usercode}, #{username}, #{password}, #{salt}, #{locked})
+    </insert>
+
+    <insert id="addPermsById" parameterType="java.util.List">
+        insert into user_permission(user_id, permission_id) VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.user_id}, (select id from permission where percode = #{item.permission_name}))
+        </foreach>
+    </insert>
+
+    <delete id="delUserPermsById">
+        delete from user_permission where user_id = #{id};
+    </delete>
+
+</mapper>

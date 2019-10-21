@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdhh.mapper.VoucherMapper">
+    <resultMap id="BaseResultMap" type="com.sdhh.po.Voucher">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="year" property="year" jdbcType="INTEGER"/>
+        <result column="month" property="month" jdbcType="INTEGER"/>
+        <result column="number" property="number" jdbcType="INTEGER"/>
+        <result column="company" property="company" jdbcType="VARCHAR"/>
+        <result column="imageurl" property="imageurl" jdbcType="VARCHAR"/>
+        <result column="imagenames" property="imagenames" jdbcType="VARCHAR"/>
+        <result column="attachurl" property="attachurl" jdbcType="VARCHAR"/>
+        <result column="attachnames" property="attachnames" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.sdhh.po.Voucher" extends="BaseResultMap">
+        <result column="detail" property="detail" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, year, month, number, company, imageurl, imagenames, attachurl, attachnames
+    </sql>
+    <sql id="Blob_Column_List">
+        detail
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from voucher
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from voucher
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.sdhh.po.Voucher">
+        insert into voucher (id, year, month,
+        number, company, imageurl,
+        imagenames, attachurl, attachnames,
+        detail)
+        values (#{id,jdbcType=BIGINT}, #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER},
+        #{number,jdbcType=INTEGER}, #{company,jdbcType=VARCHAR}, #{imageurl,jdbcType=VARCHAR},
+        #{imagenames,jdbcType=VARCHAR}, #{attachurl,jdbcType=VARCHAR}, #{attachnames,jdbcType=VARCHAR},
+        #{detail,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.sdhh.po.Voucher">
+        insert into voucher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="year != null">
+                year,
+            </if>
+            <if test="month != null">
+                month,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="imageurl != null">
+                imageurl,
+            </if>
+            <if test="imagenames != null">
+                imagenames,
+            </if>
+            <if test="attachurl != null">
+                attachurl,
+            </if>
+            <if test="attachnames != null">
+                attachnames,
+            </if>
+            <if test="detail != null">
+                detail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="year != null">
+                #{year,jdbcType=INTEGER},
+            </if>
+            <if test="month != null">
+                #{month,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=INTEGER},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="imageurl != null">
+                #{imageurl,jdbcType=VARCHAR},
+            </if>
+            <if test="imagenames != null">
+                #{imagenames,jdbcType=VARCHAR},
+            </if>
+            <if test="attachurl != null">
+                #{attachurl,jdbcType=VARCHAR},
+            </if>
+            <if test="attachnames != null">
+                #{attachnames,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                #{detail,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sdhh.po.Voucher">
+        update voucher
+        <set>
+            <if test="year != null">
+                year = #{year,jdbcType=INTEGER},
+            </if>
+            <if test="month != null">
+                month = #{month,jdbcType=INTEGER},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=INTEGER},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="imageurl != null">
+                imageurl = #{imageurl,jdbcType=VARCHAR},
+            </if>
+            <if test="imagenames != null">
+                imagenames = #{imagenames,jdbcType=VARCHAR},
+            </if>
+            <if test="attachurl != null">
+                attachurl = #{attachurl,jdbcType=VARCHAR},
+            </if>
+            <if test="attachnames != null">
+                attachnames = #{attachnames,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                detail = #{detail,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sdhh.po.Voucher">
+        update voucher
+        set year = #{year,jdbcType=INTEGER},
+        month = #{month,jdbcType=INTEGER},
+        number = #{number,jdbcType=INTEGER},
+        company = #{company,jdbcType=VARCHAR},
+        imageurl = #{imageurl,jdbcType=VARCHAR},
+        imagenames = #{imagenames,jdbcType=VARCHAR},
+        attachurl = #{attachurl,jdbcType=VARCHAR},
+        attachnames = #{attachnames,jdbcType=VARCHAR},
+        detail = #{detail,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.sdhh.po.Voucher">
+        update voucher
+        set year = #{year,jdbcType=INTEGER},
+        month = #{month,jdbcType=INTEGER},
+        number = #{number,jdbcType=INTEGER},
+        company = #{company,jdbcType=VARCHAR},
+        imageurl = #{imageurl,jdbcType=VARCHAR},
+        imagenames = #{imagenames,jdbcType=VARCHAR},
+        attachurl = #{attachurl,jdbcType=VARCHAR},
+        attachnames = #{attachnames,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <!-- Custom -->
+    <!-- 凭单录入 -->
+    <insert id="addVoucher">
+        insert into
+        voucher(company, year,month, number, detail, imageurl, imagenames, attachurl, attachnames)
+        values(#{company}, #{year}, #{month}, #{number},
+        #{detail},#{imageurl},#{imagenames},#{attachurl},#{attachnames})
+    </insert>
+
+    <select id="getCymVoucher" resultType="voucher">
+        select
+        id,year,month,number,company,imageurl,imagenames,attachurl,attachnames,detail
+        from voucher
+        where company = #{company} and year = #{year} and month = #{month}
+        order by number
+    </select>
+
+    <select id="getCymnVoucher" resultType="voucher">
+        select
+        id,year,month,number,company,imageurl,imagenames,attachurl,attachnames,detail
+        from voucher
+        where company = #{company} and year = #{year} and month = #{month} and number=#{number}
+        order by number
+    </select>
+
+    <delete id="deleteVoucherById">
+        delete from voucher
+        where id = #{id}
+    </delete>
+
+    <update id="addImgByInfo">
+        update voucher set imagenames = #{imagenames}
+        where year = #{year} and month=#{month} and number=#{number} and company=#{company}
+    </update>
+
+    <select id="getImagenamesByCYMN" resultType="String">
+        SELECT imagenames
+        from voucher
+        where company=#{company} and year=#{year} and month=#{month} and number=#{number}
+    </select>
+
+    <update id="addAttachByInfo">
+        update voucher set attachnames = #{attachnames}
+        where year = #{year} and month=#{month} and number=#{number} and company=#{company}
+    </update>
+
+    <select id="getAttachnamesByCYMN" resultType="String">
+        SELECT attachnames
+        from voucher
+        where company=#{company} and year=#{year} and month=#{month} and number=#{number}
+    </select>
+
+
+    <!-- End of Custom -->
+</mapper>

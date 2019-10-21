@@ -1,0 +1,16 @@
+/* 录入功能遮罩*/
+.modalAdd {
+    /* 遮罩不能挡住左侧的菜单栏 左侧菜单栏款220px*/
+    margin-top: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+}
+
+.ipt1 {
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    height: 34px;
+    width: 150px;
+    padding-left: 5px;
+}

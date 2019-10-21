@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 别名的定义 -->
+    <typeAliases>
+        <!--  批量定义别名 ，指定包名，自动扫描包中的类，别名即为类名，如果不在实体类前注解，则默认别名是首字母小写 -->
+        <package name="com.sdhh.po"/>
+    </typeAliases>
+
+
+    <!--   通过扫描包的方式来进行批量加载映射文件;
+    要求mapper接口和mapper映射文件名称相同，且放在同一个包下 -->
+    <mappers>
+        <package name="com.sdhh.mapper"/>
+    </mappers>
+
+</configuration>
